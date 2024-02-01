@@ -7,6 +7,11 @@ public class Observer : MonoBehaviour
     public Transform player;
     public GameEnding gameEnding;
     bool m_IsPlayerInRange;
+    float m_TimerCaught;
+    float m_TimerExclamacion;
+    bool exclamacionworking;
+    bool exclamacionaudioisplayed;
+
 
     void OnTriggerEnter (Collider other)
     {
@@ -21,6 +26,8 @@ public class Observer : MonoBehaviour
         if (other.transform == player)
         {
             m_IsPlayerInRange = false;
+            m_TimerCaught = 0f;
+            
         }
     }
 
@@ -36,9 +43,39 @@ public class Observer : MonoBehaviour
             {
                 if (raycastHit.collider.transform == player)
                 {
-                    gameEnding.CaughtPlayer();
+                    exclamacionworking = true;
+                    m_TimerCaught += Time.deltaTime;
+                    if (m_TimerCaught > 2f) 
+                    {
+                        exclamacionaudioisplayed = false; //para que no suene cuando pierdes
+                        gameEnding.CaughtPlayer();
+                    }
+                    
                 }
             }
         }
+
+        if (exclamacionworking)
+        { 
+            if(!exclamacionaudioisplayed) //audio de la exclamacion
+            {
+                gameEnding.tindeck.Play();
+                exclamacionaudioisplayed = true;
+            }
+            gameEnding.exclamacion.SetActive(true);
+            gameEnding.exclamacion.transform.position = transform.position;
+            m_TimerExclamacion += Time.deltaTime;
+            if (m_TimerExclamacion > 2f)  //dos segundos para que desaparezca la exclamacion
+            {
+                gameEnding.exclamacion.SetActive(false);
+                exclamacionworking = false;
+                m_TimerExclamacion = 0f;
+                exclamacionaudioisplayed = false;
+            }
+            
+            
+        }
     }
+
+    
 }

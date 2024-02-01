@@ -12,11 +12,15 @@ public class GameEnding : MonoBehaviour
     public AudioSource exitAudio;
     public CanvasGroup caughtBackgroundImageCanvasGroup;
     public AudioSource caughtAudio;
+    public AudioSource tindeck;
+    public GameObject exclamacion;
 
     bool m_IsPlayerAtExit;
     bool m_IsPlayerCaught;
     float m_Timer;
     bool m_HasAudioPlayed;
+    
+    
 
     void OnTriggerEnter(Collider other)
     {
@@ -30,6 +34,7 @@ public class GameEnding : MonoBehaviour
     {
         m_IsPlayerCaught = true;
     }
+
 
     void Update()
     {
@@ -66,4 +71,5 @@ public class GameEnding : MonoBehaviour
             }
         }
     }
+
 }
